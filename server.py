@@ -1,8 +1,9 @@
 from asyncio.subprocess import PIPE
+from pexpect import popen_spawn
 from pathlib import Path
+import pexpect
 import configparser
 import threading
-import pexpect
 import os
 import sys
 
@@ -15,7 +16,6 @@ class Server:
         self.script_path = ""
         self.ss_override = False
         self.get_properties()
-
         self.process = None
         self.reader = None
 
@@ -55,7 +55,7 @@ class Server:
             ]
 
         if 'win' in sys.platform:
-            self.process = pexpect.popen_spawn.PopenSpawn(" ".join(cmd), cwd=cd_path)
+            self.process = popen_spawn.PopenSpawn(" ".join(cmd), cwd=cd_path)
         else:
             self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
         print(f"Command run: {cmd}")
