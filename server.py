@@ -62,10 +62,10 @@ class Server:
 
     def output_reader(self):
         while True:
-            if server.process is None:
+            if self.process is None:
                 continue
             try:
-                line = server.process.readline()
+                line = self.process.readline()
                 if not line:
                     break
                 print(line)
@@ -73,5 +73,5 @@ class Server:
                 print(f"Reader Exception: {e}")
 
     def start_reader(self):
-        self.reader = threading.Thread(target=server.output_reader)
+        self.reader = threading.Thread(target=self.output_reader)
         self.reader.start()
