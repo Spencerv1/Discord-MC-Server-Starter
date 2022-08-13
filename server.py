@@ -18,11 +18,12 @@ class Server:
         self.get_properties()
         self.process = None
         self.reader = None
+        self.stop_reader = False
 
     def get_properties(self):
         parser = configparser.ConfigParser()
         dirname = os.path.dirname(__file__)
-        c_file = os.path.join(dirname, "config.txt")
+        c_file = os.path.join(dirname, "config_backup.txt")
         parser.read(c_file)
 
         self.token = parser.get("required", "token")
@@ -61,7 +62,7 @@ class Server:
         print(f"Command run: {cmd}")
 
     def output_reader(self):
-        while True:
+        while not self.stop_reader:
             if self.process is None:
                 continue
             try:

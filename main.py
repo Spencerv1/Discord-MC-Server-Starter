@@ -45,6 +45,7 @@ async def stop(ctx):
     await ctx.send(f"{str(ctx.author)[:-5]} is stopping the server.")
     server.process.write("stop\n")
     server.process = None
+    server.stop_reader = True
     server.reader.join()
 
 
