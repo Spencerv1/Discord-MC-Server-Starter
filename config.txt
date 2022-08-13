@@ -1,0 +1,8 @@
+[required]
+token = [Discord API token]
+server_jar = [Full path to server jar]
+ram = [Ram to dedicate (Ex: 2048M or 2G)]
+
+# server_jar and ram not necessary if using sh_script_override
+[optional]
+sh_script_override = [Full path to shell script (overrides server_jar & ram)]
