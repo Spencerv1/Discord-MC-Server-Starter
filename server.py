@@ -1,11 +1,13 @@
 from asyncio.subprocess import PIPE
 from pexpect import popen_spawn
 from pathlib import Path
+from multiprocessing import Process
 import pexpect
 import configparser
 import threading
 import os
 import sys
+from time import sleep
 
 
 class Server:
@@ -23,7 +25,7 @@ class Server:
     def get_properties(self):
         parser = configparser.ConfigParser()
         dirname = os.path.dirname(__file__)
-        c_file = os.path.join(dirname, "config.txt")
+        c_file = os.path.join(dirname, "config_backup.txt")
         parser.read(c_file)
 
         self.token = parser.get("required", "token")
@@ -61,9 +63,12 @@ class Server:
             self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
         print(f"Command run: {cmd}")
 
+        self.start_reader()
+
     def output_reader(self):
         while True:
             if self.stop_reader:
+                print('Stop reader')
                 self.stop_reader = False
                 break
             if self.process is None:
@@ -73,6 +78,7 @@ class Server:
                 print(str(line))
             except Exception as e:
                 print(f"Reader Exception: {e}")
+            sleep(0.1)
 
     def start_reader(self):
         self.reader = threading.Thread(target=self.output_reader)

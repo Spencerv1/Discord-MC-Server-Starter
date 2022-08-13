@@ -24,14 +24,13 @@ async def on_ready():
 @client.command()
 async def start(ctx):
     """Starts the server"""
-    print("Command Recieved: status")
+    print("Command Recieved: start")
 
     if server.process is not None:
         await ctx.send(f"Server is already running.")
         return
     await ctx.send(f"{str(ctx.author)[:-5]} is starting the server.")
     asyncio.create_task(server.start())
-    server.start_reader()
 
 
 @client.command()
