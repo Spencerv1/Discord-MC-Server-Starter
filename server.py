@@ -4,6 +4,7 @@ import configparser
 import threading
 import pexpect
 import os
+import sys
 
 
 class Server:
@@ -53,7 +54,10 @@ class Server:
                 "--nogui",
             ]
 
-        self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
+        if 'win' in sys.platform():
+            self.process = pexpect.popen_spawn.PopenSpawn(" ".join(cmd), cwd=cd_path)
+        else:
+            self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
         print(f"Command run: {cmd}")
 
     def output_reader(self):
