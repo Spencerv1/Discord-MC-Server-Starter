@@ -23,7 +23,7 @@ class Server:
     def get_properties(self):
         parser = configparser.ConfigParser()
         dirname = os.path.dirname(__file__)
-        c_file = os.path.join(dirname, "config_backup.txt")
+        c_file = os.path.join(dirname, "config.txt")
         parser.read(c_file)
 
         self.token = parser.get("required", "token")
