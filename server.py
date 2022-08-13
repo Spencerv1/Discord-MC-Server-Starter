@@ -62,14 +62,15 @@ class Server:
         print(f"Command run: {cmd}")
 
     def output_reader(self):
-        while not self.stop_reader:
+        while True:
+            if self.stop_reader:
+                self.stop_reader = False
+                break
             if self.process is None:
                 continue
             try:
                 line = self.process.readline()
-                if not line:
-                    break
-                print(line)
+                print(str(line))
             except Exception as e:
                 print(f"Reader Exception: {e}")
 
