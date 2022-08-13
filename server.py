@@ -54,7 +54,7 @@ class Server:
                 "--nogui",
             ]
 
-        if 'win' in sys.platform():
+        if 'win' in sys.platform:
             self.process = pexpect.popen_spawn.PopenSpawn(" ".join(cmd), cwd=cd_path)
         else:
             self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
