@@ -2,6 +2,7 @@ from discord.ext import commands
 from server import Server
 import discord
 import asyncio
+import threading
 
 # NOTE: Run the bot with sudo to avoid having to enter password during execution
 # ^ Requires dependencies to be installed globally ^
@@ -44,8 +45,8 @@ async def stop(ctx):
     await ctx.send(f"{str(ctx.author)[:-5]} is stopping the server.")
     server.process.write("stop\n")
     server.process = None
-    server.stop_reader = True
-    server.reader.join()
+    #server.stop_reader = True
+    #server.reader.join()
 
 
 @client.command()
@@ -85,4 +86,6 @@ async def test(ctx):
 
 
 if __name__ == "__main__":
+    server.reader = threading.Thread(target=server.output_reader)
+    server.reader.start()
     client.run(server.token)

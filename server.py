@@ -1,10 +1,9 @@
-from asyncio.subprocess import PIPE
+import pexpect
 from pexpect import popen_spawn
+from pexpect.exceptions import TIMEOUT
 from pathlib import Path
 from multiprocessing import Process
-import pexpect
 import configparser
-import threading
 import os
 import sys
 from time import sleep
@@ -63,23 +62,26 @@ class Server:
             self.process = pexpect.spawn(" ".join(cmd), cwd=cd_path)
         print(f"Command run: {cmd}")
 
-        self.start_reader()
 
     def output_reader(self):
         while True:
+            '''
             if self.stop_reader:
                 print('Stop reader')
                 self.stop_reader = False
                 break
-            if self.process is None:
-                continue
+            '''
+            #if self.process is None: # Probably change this - Keeps stop message from appearing
+            #    continue
             try:
                 line = self.process.readline()
-                print(str(line))
-            except Exception as e:
-                print(f"Reader Exception: {e}")
-            sleep(0.1)
+                if line:
+                    print(str(line))
+            except AttributeError:
+                pass
+            except TIMEOUT:
+                print('Output reader timeout')
+            #except Exception as e:
+            #    print(f"Reader Exception: {e}")
+            sleep(0.01)
 
-    def start_reader(self):
-        self.reader = threading.Thread(target=self.output_reader)
-        self.reader.start()
